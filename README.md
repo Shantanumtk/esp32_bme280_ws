@@ -1,4 +1,4 @@
-# esp32_bme280
+# esp32_bme280_ws
 
 Arduino code for streaming BME280 sensor data from a websocket. Uses soft AP configuration, so doesn't require a router. The output is in a csv or Json format. 
 Most of the code is taken other sources:
