@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <SparkFunTMP102.h>
 #include <Arduino.h>
 #include <WiFi.h>
 #include <WiFiClient.h> 
@@ -17,7 +18,7 @@ unsigned long delayTime;
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme; // I2C
-
+TMP102 sensor0;
 
 void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t length) {
 
@@ -70,23 +71,6 @@ Serial.begin(115200);
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
 
-
-Serial.println(F("BME280 test"));
-
-  bool status;
-
-  // default settings
-  // (you can also pass in a Wire library object like &Wire2)
-  status = bme.begin(0x77);  
-  if (!status) {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
-  }
-
-  Serial.println("-- Default Test --");
-  delayTime = 1000;
-
-  Serial.println();
 }
 
 
@@ -94,15 +78,22 @@ Serial.println(F("BME280 test"));
 void loop() {
 
 //Read data from BME280
-float temperature = bme.readTemperature();
+bme.begin(0x77);
+float temperaturebme280 = bme.readTemperature();
 float pressure  = bme.readPressure()/100;
 float altitude = bme.readAltitude(SEALEVELPRESSURE_HPA);
 float humidity = bme.readHumidity();
 
+sensor0.begin(0x48);
+
+float temperaturetmp102;
+temperaturetmp102 = sensor0.readTempC();
+Serial.print("\nTemperature TMP102: ");
+ Serial.print(temperaturetmp102);
 
 //Print data to serial 
   Serial.print("Temperature = ");
-  Serial.print(1.8 * temperature + 32);
+  Serial.print(temperaturebme280);
   Serial.println(" *F");
   
   Serial.print("Pressure = ");
@@ -118,13 +109,15 @@ float humidity = bme.readHumidity();
   Serial.println(" %");
   
 //Send to websocket
-String tempstr = String(temperature);
+String temp280str = String(temperaturebme280);
+String temp102str = String(temperaturetmp102);
 String presstr = String(pressure);
 String altstr = String(altitude);
 String humstr = String(humidity);
 
+
 char msg[200];
-sprintf(msg, "%f,%f,%f,%f", temperature,pressure,altitude,humidity);
+sprintf(msg, "%f,%f,%f,%f,%f", temperaturebme280,pressure,altitude,humidity,temperaturetmp102);
 webSocket.sendTXT(0,msg);
 
  
