@@ -47,7 +47,7 @@ and uncomment
 ```
 
 Works well with the python application [socscrollsave](https://github.com/damianjwilliams/socscrollsave), which allows real-time plotting of sensor data and saving data as a csv file.
-See my [website](www.ephys.org/ESP32) for examples.
+See my [website](https://www.ephys.org/esp32) for examples.
 
 ## License
 The project is distributed under MIT License
