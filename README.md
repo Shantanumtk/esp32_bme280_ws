@@ -17,6 +17,9 @@ Most of the code is taken other sources:
 ## Usage
 Install code and libraries described in the links above.
 
+Wire up as follows:
+![Alt text](./esp32_bme280.jpg?raw=true "Title")
+
 If the you encounter an error using I2C communication protocol for the BME, try switching the address from  0x76 to  0x77 at `status = bme.begin(0x77)`.
 
 To switch to a Json output, remove
