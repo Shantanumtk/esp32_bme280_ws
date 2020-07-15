@@ -15,10 +15,11 @@ Most of the code is taken other sources:
 
 
 ## Usage
-Install code and libraries described in the links above.
 
 Wire up as follows:
 ![esp32_bme280](./esp32_bme280.png)
+
+Install code and libraries described in the links above.
 
 If the you encounter an error using I2C communication protocol for the BME, try switching the address from  0x76 to  0x77 at `status = bme.begin(0x77)`.
 
